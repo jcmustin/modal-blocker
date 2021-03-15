@@ -8,15 +8,19 @@
 
 const blockPage = "https://github.com/jcmustin/modal-blocker";
 
+const defaultSettings = {
+  modes: {
+    "email": {"name": "Email", "allow": ["https://mail.google.com/mail/.*"]}
+  }
+};
+
 const bkg = chrome.extension.getBackgroundPage();
 
 chrome.runtime.onInstalled.addListener(function () {
-  chrome.storage.sync.get(["modes"], function (sync) {
-    const { modes } = sync;
+  chrome.storage.sync.get(["modes"], function (settings) {
+    const { modes } = settings;
     if (typeof modes !== "object" || modes === null) {
-      chrome.storage.sync.set({
-        modes: {"email": {"name": "Email", "allow": ["https://mail.google.com/mail/.*"]}}
-      });
+      chrome.storage.sync.set(defaultSettings);
     }
   });
 
@@ -43,8 +47,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
     if (!currentMode) {
       return;
     }
-    chrome.storage.sync.get(["modes"], function (sync) {
-      const { modes } = sync;
+    chrome.storage.sync.get(["modes"], function (settings) {
+      const { modes } = settings;
       const mode = modes[currentMode];
       if (!mode) {
         // TODO error handling
