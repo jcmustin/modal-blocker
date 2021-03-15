@@ -1,6 +1,7 @@
 {
   "name": "Modal Blocker",
   "version": "0.0.1",
+  "options_page": "src/options/options.html",
   "manifest_version": 2,
   "description": "A website blocker that can switch between modes",
   "homepage_url": "https://github.com/jcmustin/modal-blocker",
